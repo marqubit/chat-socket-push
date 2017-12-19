@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Suscriptor Push</title>
+</head>
+
+<body>
+    <script type="text/javascript" src="app.js"></script>
+    <script>
+        function suscribePuppies(){
+            var category = "puppiesCategory";
+            var conn = new ab.Session('ws://localhost:9016',
+                function() {
+                    console.log("suscribiendo usuario");
+                    conn.subscribe(category, function(topic, data) {
+                        console.log("se suscribio user");
+                        console.log(data);
+                        // This is where you would add the new article to the DOM (beyond the scope of this tutorial)
+                        var mensaje = 'New article published to category ' + topic + ' : ' + data.title;
+                        console.log(mensaje);
+                        document.getElementById('articles').innerHTML += "<br> " + mensaje;
+                    });
+                },
+                function() {
+                    console.warn('WebSocket connection closed');
+                },
+                {'skipSubprotocolCheck': true}
+            );
+        }
+        function suscribeKittens(){
+            var category = "kittensCategory";
+            var conn = new ab.Session('ws://localhost:9016',
+                function() {
+                    console.log("suscribiendo usuario");
+                    conn.subscribe(category, function(topic, data) {
+                        console.log("se suscribio user");
+                        console.log(data);
+                        // This is where you would add the new article to the DOM (beyond the scope of this tutorial)
+                        var mensaje = 'New article published to category ' + topic + ' : ' + data.title + ": <br> " + data.article + "<br>";
+                        console.log(mensaje);
+                        document.getElementById('articles').innerHTML += "<br> " + mensaje;
+                    });
+                },
+                function() {
+                    console.warn('WebSocket connection closed');
+                },
+                {'skipSubprotocolCheck': true}
+            );
+        }
+    </script>
+
+</body>
+
+  Welcome suscriptor <br>
+  <strong>Select Category KittensCategory or PuppiesCategory </strong><br>
+  <button onclick="suscribePuppies">Suscribe Kittens Category</button> <br>
+  <button onclick="suscribeKittens">Suscribe Puppies Category</button>
+  <br> <strong> Articles from your category: </strong><br>
+  <div id="articles">
+      
+  </div>
+
+</html>
+
+
